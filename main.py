@@ -5,7 +5,10 @@ from spotipy.oauth2 import SpotifyClientCredentials
 
 from urllib.request import urlretrieve
 
+from create_database import make_audio_data_array, train_test_split
+import numpy as np
 
+full_path = "/Users/chris/Desktop/Fall-2021/Signal Processing/EE-269-Project/"
 cid = clientID
 secret = clientSecret
 
@@ -26,7 +29,7 @@ def get_playlist_tracks(user_id, playlist_id):
 
 if __name__ == "__main__":
 
-    #playlists = get_playlists_by_genre("monte rio skatepark", 10)
+    # playlists = get_playlists_by_genre("monte rio skatepark", 10)
 
     # print_playlist_info(playlists)
 
@@ -44,10 +47,10 @@ if __name__ == "__main__":
         if i["track"]["preview_url"] != None:
             preview_urls.append(i["track"]["preview_url"])
 
-    directory = "./" + subgenre_one
-    for j in range(len(preview_urls)):
-        urlretrieve(preview_urls[j], "{}/{}{}".format(directory,
-                                                      'track{}'.format(j+1), ".mp3"))
+    directory_one = full_path + subgenre_one
+    # for j in range(len(preview_urls)):
+    #     urlretrieve(preview_urls[j], "{}/{}{}".format(directory_one,
+    #                                                   'track{}'.format(j+1), ".mp3"))
 
     # Sub genre two
     subgenre_two = "dreampop"
@@ -61,7 +64,33 @@ if __name__ == "__main__":
         if z["track"]["preview_url"] != None:
             preview_urls.append(z["track"]["preview_url"])
 
-    directory = "./" + subgenre_two
-    for k in range(len(preview_urls)):
-        urlretrieve(preview_urls[k], "{}/{}{}".format(directory,
-                                                      'track{}'.format(k+1), ".mp3"))
+    directory_two = full_path + subgenre_two
+    # for k in range(len(preview_urls)):
+    #     urlretrieve(preview_urls[k], "{}/{}{}".format(directory_two,
+    #                                                   'track{}'.format(k+1), ".mp3"))
+
+    # Get Data for genre one
+    raw_genre_one_data, sr = make_audio_data_array(directory_two)
+    print(directory_two)
+
+    # split into training and testing data
+    genre_one_train, genre_one_test = train_test_split(raw_genre_one_data, 1)
+
+    # Save data
+    genre_one_train_folder = full_path + "/genre_one_train/genre_one_train"
+    genre_one_test_folder = full_path + "/genre_one_test/genre_one_test"
+    np.save(genre_one_train_folder, genre_one_train)
+    np.save(genre_one_test_folder, genre_one_test)
+
+    # Get Data for genre two
+    raw_genre_two_data, sr = make_audio_data_array(directory_one)
+    print(directory_one)
+
+    # split into training and testing data
+    genre_two_train, genre_two_test = train_test_split(raw_genre_two_data, 1)
+
+    # Save data
+    genre_two_train_folder = full_path + "/genre_two_train/genre_two_train"
+    genre_two_test_folder = full_path + "/genre_two_test/genre_two_test"
+    np.save(genre_two_train_folder, genre_two_train)
+    np.save(genre_two_test_folder, genre_two_test)
