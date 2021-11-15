@@ -30,16 +30,37 @@ results = sp.artist_top_tracks(lz_uri)
 
 preview_urls = []
 
-for track in results['tracks'][:10]:
-    print('track    : ' + track['name'])
-    print('audio    : ' + track['preview_url'])
-    preview_urls.append(track['preview_url'])
-    print('cover art: ' + track['album']['images'][0]['url'])
-    print()
+# for track in results['tracks'][:10]:
+#     print('track    : ' + track['name'])
+#     print('audio    : ' + track['preview_url'])
+#     preview_urls.append(track['preview_url'])
+#     print('cover art: ' + track['album']['images'][0]['url'])
+#     print()
 
 
-directory = "./"
+def get_playlists_by_genre(genre, limit):
+    results = sp.search(genre, limit=limit, type='playlist')
+    return results['playlists']['items']
 
-for i in range(len(preview_urls)):
-    urlretrieve(preview_urls[i], "{}/{}{}".format('./',
-                                                  'track{}'.format(i+1), ".mp3"))
+
+def print_playlist_info(playlists):
+    for playlist in playlists:
+        print('{}: {}'.format(
+            playlist['name'],
+            '{} tracks'.format(playlist['tracks']['total']))
+        )
+
+
+# directory = "./"
+
+# for i in range(len(preview_urls)):
+#     urlretrieve(preview_urls[i], "{}/{}{}".format('./',
+#                                                   'track{}'.format(i+1), ".mp3"))
+
+
+if __name__ == "__main__":
+
+    print('here')
+    playlists = get_playlists_by_genre("monte rio skatepark", 10)
+
+    print_playlist_info(playlists)
