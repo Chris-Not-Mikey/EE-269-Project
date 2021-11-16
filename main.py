@@ -53,6 +53,10 @@ if __name__ == "__main__":
     # Get Playlist ID of specific playlist: https://clients.caster.fm/knowledgebase/110/How-to-find-Spotify-playlist-ID.html
     spotify_playlist_two = "7buyfcBw6G2PoHYY65mhGW"
 
+    # The max number of songs from the playlist that we will take. Probably don't need to touch this, but just in case it is here
+    # IF you are running this on your personal computer, you may want to reduce this so you don't download 1000+ songs
+    limit = 10
+
     ############################################# END CHANGE SUBGENRE  #############################################################
 
     # GET PREVIEW URLS FOR SUBGENRE 1
@@ -64,7 +68,7 @@ if __name__ == "__main__":
     lf = 0
     for i in playlist_one_tracks:
 
-        if i["track"]["preview_url"] != None and lf < 10:
+        if i["track"]["preview_url"] != None and lf < limit:
             preview_urls.append(i["track"]["preview_url"])
 
             track_uri = i["track"]["uri"]
@@ -74,11 +78,11 @@ if __name__ == "__main__":
             # Example feature: {'danceability': 0.612, 'energy': 0.476, 'key': 8, 'loudness': -8.256, 'mode': 1, 'speechiness': 0.0275, 'acousticness': 0.861, 'instrumentalness': 0.0044, 'liveness': 0.147, 'valence': 0.257, 'tempo': 118.381, 'type': 'audio_features', 'id': '6asU049doNupkVllo61luh', 'uri': 'spotify:track:6asU049doNupkVllo61luh', 'track_href': 'https://api.spotify.com/v1/tracks/6asU049doNupkVllo61luh', 'analysis_url': 'https://api.spotify.com/v1/audio-analysis/6asU049doNupkVllo61luh', 'duration_ms': 288720, 'time_signature': 3}
 
             subgenre_one_features.append([features["danceability"], features["energy"], features["key"], features["loudness"], features["mode"], features["speechiness"],
-                                          features["acousticness"], features["instrumentalness"],  features["liveness"], features["valence"], features["tempo"],  features["duration_ms"], features["time_signature"]])
+                                          features["acousticness"], features["instrumentalness"],  features["liveness"], features["valence"], features["tempo"],  features["duration_ms"], features["time_signature"], i["track"]["name"]])
 
             lf = lf + 1
 
-    print("Total length of Sub Genre One")
+    print("Total number of song previews of Sub Genre One")
     print(lf)
 
     # DOWNLOAD PREVIEW TRACKS FOR SUBGENRE 1
@@ -102,21 +106,23 @@ if __name__ == "__main__":
     lf = 0
     for z in playlist_two_tracks:
 
-        if z["track"]["preview_url"] != None and lf < 10:
+        if z["track"]["preview_url"] != None and lf < limit:
             preview_urls.append(z["track"]["preview_url"])
 
             track_uri = z["track"]["uri"]
+
+            # print(z["track"]["name"])
 
             features = sp.audio_features(track_uri)[0]
 
             # Example feature: {'danceability': 0.612, 'energy': 0.476, 'key': 8, 'loudness': -8.256, 'mode': 1, 'speechiness': 0.0275, 'acousticness': 0.861, 'instrumentalness': 0.0044, 'liveness': 0.147, 'valence': 0.257, 'tempo': 118.381, 'type': 'audio_features', 'id': '6asU049doNupkVllo61luh', 'uri': 'spotify:track:6asU049doNupkVllo61luh', 'track_href': 'https://api.spotify.com/v1/tracks/6asU049doNupkVllo61luh', 'analysis_url': 'https://api.spotify.com/v1/audio-analysis/6asU049doNupkVllo61luh', 'duration_ms': 288720, 'time_signature': 3}
 
             subgenre_two_features.append([features["danceability"], features["energy"], features["key"], features["loudness"], features["mode"], features["speechiness"],
-                                          features["acousticness"], features["instrumentalness"],  features["liveness"], features["valence"], features["tempo"],  features["duration_ms"], features["time_signature"]])
+                                          features["acousticness"], features["instrumentalness"],  features["liveness"], features["valence"], features["tempo"],  features["duration_ms"], features["time_signature"], z["track"]["name"]])
 
             lf = lf + 1
 
-    print("total songs in Sub Genre Two")
+    print("Total number of song previews of Sub Genre Two")
     print(lf)
 
     # DOWNLOAD PREVIEW TRACKS FOR SUBGENRE 1
@@ -135,7 +141,7 @@ if __name__ == "__main__":
 
     # Get Data for genre one
     raw_genre_one_data, sr = make_audio_data_array(
-        directory_one, subgenre_one_features, 10)
+        directory_one, subgenre_one_features, limit)
 
     # Split data into training and testing data for genre 1
     genre_one_train, genre_one_test = train_test_split(raw_genre_one_data, 1)
@@ -159,11 +165,11 @@ if __name__ == "__main__":
     np.save(genre_one_train_folder, genre_one_train)
     np.save(genre_one_test_folder, genre_one_test)
 
-    # PUT AUDIO DATA + FEATURES INTO ARRAY FOR GENRE 1
+    # PUT AUDIO DATA + FEATURES INTO ARRAY FOR GENRE 2
 
     # Get Data for genre two
     raw_genre_two_data, sr = make_audio_data_array(
-        directory_two, subgenre_two_features, 10)
+        directory_two, subgenre_two_features, limit)
 
     # split into training and testing data for genre 2
     genre_two_train, genre_two_test = train_test_split(raw_genre_two_data, 1)
