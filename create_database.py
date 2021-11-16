@@ -5,6 +5,7 @@ import numpy as np
 
 # Take in a directory and loads all the mp3 data
 
+# We only allow songs to be exactly 30 seconds
 SONG_LENGTH = 662076
 
 
