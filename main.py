@@ -69,18 +69,22 @@ if __name__ == "__main__":
     for i in playlist_one_tracks:
 
         if i["track"]["preview_url"] != None and lf < limit:
-            preview_urls.append(i["track"]["preview_url"])
 
             track_uri = i["track"]["uri"]
 
             features = sp.audio_features(track_uri)[0]
 
-            # Example feature: {'danceability': 0.612, 'energy': 0.476, 'key': 8, 'loudness': -8.256, 'mode': 1, 'speechiness': 0.0275, 'acousticness': 0.861, 'instrumentalness': 0.0044, 'liveness': 0.147, 'valence': 0.257, 'tempo': 118.381, 'type': 'audio_features', 'id': '6asU049doNupkVllo61luh', 'uri': 'spotify:track:6asU049doNupkVllo61luh', 'track_href': 'https://api.spotify.com/v1/tracks/6asU049doNupkVllo61luh', 'analysis_url': 'https://api.spotify.com/v1/audio-analysis/6asU049doNupkVllo61luh', 'duration_ms': 288720, 'time_signature': 3}
+            # occasionally some songs don't have listed features
+            if features != None:
 
-            subgenre_one_features.append([features["danceability"], features["energy"], features["key"], features["loudness"], features["mode"], features["speechiness"],
-                                          features["acousticness"], features["instrumentalness"],  features["liveness"], features["valence"], features["tempo"],  features["duration_ms"], features["time_signature"], i["track"]["name"]])
+                preview_urls.append(i["track"]["preview_url"])
 
-            lf = lf + 1
+                # Example feature: {'danceability': 0.612, 'energy': 0.476, 'key': 8, 'loudness': -8.256, 'mode': 1, 'speechiness': 0.0275, 'acousticness': 0.861, 'instrumentalness': 0.0044, 'liveness': 0.147, 'valence': 0.257, 'tempo': 118.381, 'type': 'audio_features', 'id': '6asU049doNupkVllo61luh', 'uri': 'spotify:track:6asU049doNupkVllo61luh', 'track_href': 'https://api.spotify.com/v1/tracks/6asU049doNupkVllo61luh', 'analysis_url': 'https://api.spotify.com/v1/audio-analysis/6asU049doNupkVllo61luh', 'duration_ms': 288720, 'time_signature': 3}
+
+                subgenre_one_features.append([features["danceability"], features["energy"], features["key"], features["loudness"], features["mode"], features["speechiness"],
+                                              features["acousticness"], features["instrumentalness"],  features["liveness"], features["valence"], features["tempo"],  features["duration_ms"], features["time_signature"], i["track"]["name"]])
+
+                lf = lf + 1
 
     print("Total number of song previews of Sub Genre One")
     print(lf)
@@ -107,20 +111,24 @@ if __name__ == "__main__":
     for z in playlist_two_tracks:
 
         if z["track"]["preview_url"] != None and lf < limit:
-            preview_urls.append(z["track"]["preview_url"])
 
             track_uri = z["track"]["uri"]
 
-            # print(z["track"]["name"])
-
             features = sp.audio_features(track_uri)[0]
 
-            # Example feature: {'danceability': 0.612, 'energy': 0.476, 'key': 8, 'loudness': -8.256, 'mode': 1, 'speechiness': 0.0275, 'acousticness': 0.861, 'instrumentalness': 0.0044, 'liveness': 0.147, 'valence': 0.257, 'tempo': 118.381, 'type': 'audio_features', 'id': '6asU049doNupkVllo61luh', 'uri': 'spotify:track:6asU049doNupkVllo61luh', 'track_href': 'https://api.spotify.com/v1/tracks/6asU049doNupkVllo61luh', 'analysis_url': 'https://api.spotify.com/v1/audio-analysis/6asU049doNupkVllo61luh', 'duration_ms': 288720, 'time_signature': 3}
+            # occasionally some songs don't have listed features
+            if features != None:
 
-            subgenre_two_features.append([features["danceability"], features["energy"], features["key"], features["loudness"], features["mode"], features["speechiness"],
-                                          features["acousticness"], features["instrumentalness"],  features["liveness"], features["valence"], features["tempo"],  features["duration_ms"], features["time_signature"], z["track"]["name"]])
+                preview_urls.append(z["track"]["preview_url"])
 
-            lf = lf + 1
+                # print(z["track"]["name"])
+
+                # Example feature: {'danceability': 0.612, 'energy': 0.476, 'key': 8, 'loudness': -8.256, 'mode': 1, 'speechiness': 0.0275, 'acousticness': 0.861, 'instrumentalness': 0.0044, 'liveness': 0.147, 'valence': 0.257, 'tempo': 118.381, 'type': 'audio_features', 'id': '6asU049doNupkVllo61luh', 'uri': 'spotify:track:6asU049doNupkVllo61luh', 'track_href': 'https://api.spotify.com/v1/tracks/6asU049doNupkVllo61luh', 'analysis_url': 'https://api.spotify.com/v1/audio-analysis/6asU049doNupkVllo61luh', 'duration_ms': 288720, 'time_signature': 3}
+
+                subgenre_two_features.append([features["danceability"], features["energy"], features["key"], features["loudness"], features["mode"], features["speechiness"],
+                                              features["acousticness"], features["instrumentalness"],  features["liveness"], features["valence"], features["tempo"],  features["duration_ms"], features["time_signature"], z["track"]["name"]])
+
+                lf = lf + 1
 
     print("Total number of song previews of Sub Genre Two")
     print(lf)
