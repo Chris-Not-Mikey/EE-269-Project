@@ -170,8 +170,8 @@ if __name__ == "__main__":
         print("Making New Folder")
         os.mkdir(genre_one_test_folder)
 
-    np.save(genre_one_train_folder, genre_one_train)
-    np.save(genre_one_test_folder, genre_one_test)
+    np.save(genre_one_train_folder + subgenre_one, genre_one_train)
+    np.save(genre_one_test_folder + subgenre_one, genre_one_test)
 
     # PUT AUDIO DATA + FEATURES INTO ARRAY FOR GENRE 2
 
@@ -199,5 +199,6 @@ if __name__ == "__main__":
         print("Making New Folder")
         os.mkdir(genre_two_test_folder)
 
-    np.save(genre_two_train_folder, genre_two_train)
-    np.save(genre_two_test_folder, genre_two_test)
+    np.save(genre_two_train_folder + subgenre_two, genre_two_train)
+    np.save(genre_two_test_folder + subgenre_two, genre_two_test)
+
