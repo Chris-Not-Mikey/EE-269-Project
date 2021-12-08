@@ -13,20 +13,12 @@ if __name__ == "__main__":
     subgenre1_test_dir = '/home/christophercalloway216/EE-269-Project/dreampop_test/'
     subgenre2_train_dir = '/home/christophercalloway216/EE-269-Project/shoegaze_train/'
     subgenre2_test_dir = '/home/christophercalloway216/EE-269-Project/shoegaze_test/'
-    # dreampop_train = np.load('dreampop_train/dreampop_train.npy', allow_pickle=True)  # Old storage method
-    # dreampop_test = np.load('dreampop_test/dreampop_test.npy', allow_pickle=True)
-    # shoegaze_train = np.load('shoegaze_train/shoegaze_train.npy', allow_pickle=True)
-    # shoegaze_test = np.load('shoegaze_test/shoegaze_test.npy', allow_pickle=True)
 
     # Used for preallocating size for arrays
     n_subgenre2train = len([f for f in os.listdir(subgenre2_train_dir) if f.endswith('.npy')])
     n_subgenre2test = len([f for f in os.listdir(subgenre2_test_dir) if f.endswith('.npy')])
     n_subgenre1train = len([f for f in os.listdir(subgenre1_train_dir) if f.endswith('.npy')])
     n_subgenre1test = len([f for f in os.listdir(subgenre1_test_dir) if f.endswith('.npy')])
-
-    # Create label arrays - Assign 1 to dreampop, 0 to shoegaze
-    # Y_train = np.concatenate((np.zeros((n_subgenre2train, 1)), np.ones((n_subgenre1train, 1))))
-    # Y_test = np.concatenate((np.zeros((n_subgenre2test, 1)), np.ones((n_subgenre1test, 1))))
 
     # Perform any data preprocessing here
     # Convert to MFCC
@@ -41,7 +33,6 @@ if __name__ == "__main__":
             # Get MFCC coefficients
             if len(audiodata[0]) > 1000:  # Checks to make sure file has a valid sample
                 mfcc_coeffs = librosa.feature.mfcc(np.array(audiodata[0]), sr=22050, n_mfcc=16, hop_length=512, win_length=2048)
-                #mfcc_coeffs = librosa.feature.mfcc(shoegaze_train[n], sr=44100, n_mfcc=16, hop_length=16, win_length=32)
                 if x_train_empty:  # If empty, creates array to store all MFCC data
                     X_train_mfcc = np.zeros((n_subgenre2train + n_subgenre1train, mfcc_coeffs.size))
                     x_train_empty = False
@@ -55,7 +46,6 @@ if __name__ == "__main__":
             audiodata = np.load(os.path.join(subgenre1_train_dir, filename), allow_pickle=True)
             if len(audiodata[0]) > 1000: 
                 mfcc_coeffs = librosa.feature.mfcc(np.array(audiodata[0]), sr=22050, n_mfcc=16, hop_length=512, win_length=2048)
-                #mfcc_coeffs = librosa.feature.mfcc(dreampop_train[n], sr=44100, n_mfcc=16, hop_length=16, win_length=32)
                 X_train_mfcc[n, :] = mfcc_coeffs.flatten('F')
                 n = n + 1
     Y_train = np.concatenate((Y1, np.ones((n - n0, 1))))
@@ -71,7 +61,6 @@ if __name__ == "__main__":
             audiodata = np.load(os.path.join(subgenre2_test_dir, filename), allow_pickle=True)
             if len(audiodata[0]) > 1000: 
                 mfcc_coeffs = librosa.feature.mfcc(np.array(audiodata[0]), sr=22050, n_mfcc=16, hop_length=512, win_length=2048)
-                #mfcc_coeffs = librosa.feature.mfcc(shoegaze_test[n], sr=44100, n_mfcc=16, hop_length=16, win_length=32)
                 X_test_mfcc[n, :] = mfcc_coeffs.flatten('F')
                 n = n + 1
     Y1 = np.zeros((n, 1))
@@ -81,7 +70,6 @@ if __name__ == "__main__":
             audiodata = np.load(os.path.join(subgenre1_test_dir, filename), allow_pickle=True)
             if len(audiodata[0]) > 1000: 
                 mfcc_coeffs = librosa.feature.mfcc(np.array(audiodata[0]), sr=22050, n_mfcc=16, hop_length=512, win_length=2048)
-                #mfcc_coeffs = librosa.feature.mfcc(dreampop_test[n], sr=44100, n_mfcc=16, hop_length=16, win_length=32)
                 X_test_mfcc[n, :] = mfcc_coeffs.flatten('F')
                 n = n + 1
     Y_test = np.concatenate((Y1, np.ones((n - n0, 1))))
